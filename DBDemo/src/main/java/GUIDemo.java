@@ -1,12 +1,15 @@
 import io.github.cdimascio.dotenv.Dotenv;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.Document;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 
-public class GUIDemo implements ActionListener {
+public class GUIDemo implements ActionListener, DocumentListener {
 
     private JTextField idTxt;
     private JTextField fNameTxt;
@@ -16,9 +19,11 @@ public class GUIDemo implements ActionListener {
     private JButton prevBtn;
     private JButton clearBtn;
     private JButton deleteBtn;
+    private JButton addBtn;
     private ResultSet data;
     private Dotenv dotenv;
     private Connection conn;
+    private boolean tableIsEmpty;
 
     private void GUITest() {
         // Initialise widgets.
@@ -27,7 +32,7 @@ public class GUIDemo implements ActionListener {
         JLabel fNameLbl = new JLabel("First Name");
         JLabel lNameLbl = new JLabel("Last Name");
         JLabel emailLbl = new JLabel("Email");
-        JPanel panel = new JPanel(new GridLayout(6, 2));
+        JPanel panel = new JPanel(new GridLayout(7, 2));
         idTxt = new JTextField(20);
         fNameTxt = new JTextField(20);
         lNameTxt = new JTextField(20);
@@ -36,12 +41,17 @@ public class GUIDemo implements ActionListener {
         prevBtn = new JButton("Previous");
         clearBtn = new JButton("Clear");
         deleteBtn = new JButton("Delete");
+        addBtn = new JButton("Add");
 
-        // Click listeners.
+        // Action listeners.
         nextBtn.addActionListener(this);
         prevBtn.addActionListener(this);
         clearBtn.addActionListener(this);
         deleteBtn.addActionListener(this);
+        addBtn.addActionListener(this);
+
+        // Document listeners.
+        idTxt.getDocument().addDocumentListener(this);
 
         // Loads the environment variables from .env file.
         dotenv = Dotenv.load();
@@ -58,7 +68,7 @@ public class GUIDemo implements ActionListener {
             addComponents(
                     panel,
                     new JComponent[]{idLbl, idTxt, fNameLbl, fNameTxt, lNameLbl, lNameTxt, emailLbl, emailTxt,
-                            prevBtn, nextBtn, clearBtn, deleteBtn}
+                            prevBtn, nextBtn, clearBtn, deleteBtn, addBtn}
             );
 
             frame.add(panel);
@@ -67,12 +77,6 @@ public class GUIDemo implements ActionListener {
 
             // Display the loaded data in the widgets.
             displayData();
-
-//            INSERT INTO `data` (`id`, `name`, `lastname`, `email`) VALUES
-//            ('1', 'test1', 'test1.', 'test1@gmail.com'),
-//            ('2', 'test2', 'test2.', 'test2@gmail.com'),
-//            ('3', 'test3', 'test3.', 'test3@gmail.com'),
-//            ('4', 'test4', 'test4.', 'test4@gmail.com')
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -95,6 +99,7 @@ public class GUIDemo implements ActionListener {
             // Clear input boxes.
             clearBtn.doClick();
             showMessageDialog("Table '" + dotenv.get("TABLE_NAME") + "' is empty!");
+            tableIsEmpty = true;
             return null;
         }
 
@@ -116,6 +121,8 @@ public class GUIDemo implements ActionListener {
         rs.first();
         prevBtn.setEnabled(false);
         deleteBtn.setEnabled(true);
+
+        tableIsEmpty = false;
 
         return rs;
     }
@@ -154,12 +161,15 @@ public class GUIDemo implements ActionListener {
         try {
             // Execute DELETE query.
             Statement st = conn.createStatement();
-            st.executeUpdate("DELETE FROM " + table + " WHERE id=" + id);
+            int result = st.executeUpdate("DELETE FROM " + table + " WHERE id=" + id);
+
+            if (result == 0) {
+                showMessageDialog("Record with ID '" + id + "' not found!");
+                return;
+            }
 
             // Show what was deleted.
-            String deletedUser = "id=" + idTxt.getText() + ", name=" + fNameTxt.getText() + ", lastname="
-                    + lNameTxt.getText() + ", email=" + emailTxt.getText();
-            showMessageDialog("Deleted user:\n" + deletedUser);
+            showMessageDialog("Deleted user with ID: " + idTxt.getText());
 
             // Reload the data.
             data = loadData(
@@ -172,6 +182,30 @@ public class GUIDemo implements ActionListener {
         } catch (SQLException e) {
             e.printStackTrace();
             showMessageDialog("There was a problem deleting this record.");
+        }
+    }
+
+    private void addRecord(String table, int id, String name, String lastname, String email) {
+        try {
+            // Execute DELETE query.
+            Statement st = conn.createStatement();
+            st.executeUpdate(
+                    "INSERT INTO " + table + " VALUES (" + id + ", '" + name + "', '" + lastname + "', '" + email + "')"
+            );
+
+            showMessageDialog("Successfully inserted new record into table '" + dotenv.get("TABLE_NAME") + "'");
+
+            // Reload the data.
+            data = loadData(
+                    dotenv.get("DB_TEST"),
+                    dotenv.get("TABLE_NAME"),
+                    dotenv.get("USERNAME"),
+                    dotenv.get("PASSWORD")
+            );
+            displayData();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showMessageDialog("There was a problem inserting this record.");
         }
     }
 
@@ -212,21 +246,30 @@ public class GUIDemo implements ActionListener {
             }
             // 'Delete' button pressed.
             else if (event.getSource() == deleteBtn) {
-                // Check if 'ID' input box is empty.
-                if (idTxt.getText().equals("")) {
-                    showMessageDialog("ID field must not be empty!");
-                    return;
-                }
                 int result = confirmDeletion();
                 switch (result) {
                     // Clicked 'Yes'.
                     case 0:
-                        // Delete current row from the table.
-                        deleteRecord(dotenv.get("TABLE_NAME"), Integer.parseInt(idTxt.getText()));
+                        // Check if 'ID' field is of integer format.
+                        if (validIdFormat()) {
+                            // Delete current row from the table.
+                            deleteRecord(dotenv.get("TABLE_NAME"), Integer.parseInt(idTxt.getText()));
+                        }
                         break;
                     // Clicked 'No'.
                     case 1:
                         break;
+                }
+            }
+            // 'Add' button pressed.
+            else if (event.getSource() == addBtn) {
+                // Check if 'ID' field is of integer format.
+                if (validIdFormat()) {
+                    // Insert a record into specified table.
+                    addRecord(
+                            dotenv.get("TABLE_NAME"), Integer.parseInt(idTxt.getText()),
+                            fNameTxt.getText(), lNameTxt.getText(), emailTxt.getText()
+                    );
                 }
             }
 
@@ -234,6 +277,54 @@ public class GUIDemo implements ActionListener {
             e.printStackTrace();
         }
 
+    }
+
+    private boolean validIdFormat() {
+        try {
+            Integer.parseInt(idTxt.getText());
+            return true;
+        } catch (NumberFormatException e) {
+            // Invalid format.
+            showMessageDialog("'ID' field must be of integer format!");
+            return false;
+        }
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent e) {
+        enableDisableButtons(e);
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent e) {
+        enableDisableButtons(e);
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent e) {
+    }
+
+    // Enable/Disable buttons based on length of 'ID' input box.
+    public void enableDisableButtons(DocumentEvent e) {
+        Document doc = e.getDocument();
+        // Text input field is empty.
+        if (doc.getLength() == 0 && !tableIsEmpty) {
+            clearBtn.setEnabled(false);
+            deleteBtn.setEnabled(false);
+            addBtn.setEnabled(false);
+        } else if (doc.getLength() == 0 && tableIsEmpty) {
+            clearBtn.setEnabled(false);
+            deleteBtn.setEnabled(false);
+            addBtn.setEnabled(false);
+        } else if (doc.getLength() > 0 && tableIsEmpty) {
+            clearBtn.setEnabled(true);
+            deleteBtn.setEnabled(false);
+            addBtn.setEnabled(true);
+        } else {
+            clearBtn.setEnabled(true);
+            deleteBtn.setEnabled(true);
+            addBtn.setEnabled(true);
+        }
     }
 
     public static void main(String[] args) {
