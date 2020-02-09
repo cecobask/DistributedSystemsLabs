@@ -77,14 +77,14 @@ public class GUIDemo implements ActionListener, DocumentListener {
             );
 
             // Load and display the data.
-            data = loadData();
+            loadData();
             displayData();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private ResultSet loadData() {
+    private void loadData() {
         try {
             PreparedStatement st = conn.prepareStatement("SELECT * FROM data");
             ResultSet rs = st.executeQuery();
@@ -99,7 +99,8 @@ public class GUIDemo implements ActionListener, DocumentListener {
                 clearBtn.doClick();
                 showMessageDialog("Table 'data' is empty!");
                 tableIsEmpty = true;
-                return null;
+                data = null;
+                return;
             }
 
             // Count the number of rows in the table.
@@ -123,11 +124,10 @@ public class GUIDemo implements ActionListener, DocumentListener {
 
             tableIsEmpty = false;
 
-            return rs;
+            data = rs;
         } catch (SQLException e) {
             e.printStackTrace();
             showMessageDialog("There was a problem loading the data! Check the logs for more info.");
-            return null;
         }
     }
 
@@ -169,7 +169,7 @@ public class GUIDemo implements ActionListener, DocumentListener {
             int result = st.executeUpdate();
 
             if (result == 0) {
-                showMessageDialog("Record with ID '" + id + "' not found!");
+                showMessageDialog("Record with ID " + id + " not found!");
                 return;
             }
 
@@ -177,7 +177,7 @@ public class GUIDemo implements ActionListener, DocumentListener {
             showMessageDialog("Deleted record with ID: " + id);
 
             // Reload the data.
-            data = loadData();
+            loadData();
             displayData();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -200,7 +200,7 @@ public class GUIDemo implements ActionListener, DocumentListener {
             showMessageDialog("Inserted record with ID: " + id);
 
             // Reload the data.
-            data = loadData();
+            loadData();
             displayData();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -216,12 +216,17 @@ public class GUIDemo implements ActionListener, DocumentListener {
             st.setString(2, lastname);
             st.setString(3, email);
             st.setInt(4, id);
-            st.executeUpdate();
+            int result = st.executeUpdate();
+
+            if (result == 0) {
+                showMessageDialog("Record with ID " + id + " not found!");
+                return;
+            }
 
             showMessageDialog("Updated record with ID: " + id);
 
             // Reload the data.
-            data = loadData();
+            loadData();
             displayData();
         } catch (SQLException e) {
             e.printStackTrace();
