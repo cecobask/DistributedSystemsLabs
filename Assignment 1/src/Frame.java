@@ -3,7 +3,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
 
-public class View {
+public class Frame {
 
     // Declare Swing components.
     private JFrame frame;
@@ -29,7 +29,7 @@ public class View {
     private JButton deleteButton;
     private JButton updateButton;
 
-    public View(String title) {
+    public Frame(String title) {
         frame = new JFrame(title); // Set frame title.
 
         createComponents(); // Component declarations.

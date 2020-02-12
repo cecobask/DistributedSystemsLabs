@@ -1,13 +1,15 @@
+import java.sql.Date;
+
 public class Employee {
 
     private String ssn;
-    private String dob;
+    private Date dob;
     private String name;
     private String address;
     private int salary;
     private String gender;
 
-    public Employee(String ssn, String dob, String name, String address, int salary, String gender) {
+    public Employee(String ssn, Date dob, String name, String address, int salary, String gender) {
         this.ssn = ssn;
         this.dob = dob;
         this.name = name;
@@ -15,6 +17,8 @@ public class Employee {
         this.salary = salary;
         this.gender = gender;
     }
+
+    public Employee(){}
 
     @Override
     public String toString() {
@@ -36,11 +40,11 @@ public class Employee {
         this.ssn = ssn;
     }
 
-    public String getDob() {
+    public Date getDob() {
         return dob;
     }
 
-    public void setDob(String dob) {
+    public void setDob(Date dob) {
         this.dob = dob;
     }
 
