@@ -1,4 +1,6 @@
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class Employee {
 
@@ -8,6 +10,7 @@ public class Employee {
     private String address;
     private int salary;
     private String gender;
+    private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
     public Employee(String ssn, Date dob, String name, String address, int salary, String gender) {
         this.ssn = ssn;
@@ -44,6 +47,15 @@ public class Employee {
         return dob;
     }
 
+    public String getFormattedDate() {
+        return formatter.format(getDob());
+    }
+
+    public Date parseDobString(String dobString) throws ParseException {
+        java.util.Date date = formatter.parse(dobString);
+        return new java.sql.Date(date.getTime());
+    }
+
     public void setDob(Date dob) {
         this.dob = dob;
     }
@@ -73,10 +85,10 @@ public class Employee {
     }
 
     public String getGender() {
-        return gender;
+        return gender.toUpperCase();
     }
 
     public void setGender(String gender) {
-        this.gender = gender;
+        this.gender = gender.toUpperCase();
     }
 }

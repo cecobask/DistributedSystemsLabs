@@ -121,6 +121,9 @@ public class Frame {
         addButton = new JButton("ADD");
         deleteButton = new JButton("DELETE");
         updateButton = new JButton("UPDATE");
+
+        maleRadioButton.setActionCommand("M");
+        femaleRadioButton.setActionCommand("F");
     }
 
     public JFrame getFrame() {

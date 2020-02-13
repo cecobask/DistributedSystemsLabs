@@ -1,6 +1,7 @@
 public class App {
 
     public static void main(String[] args) {
-        Frame v = new Frame("Employee details");
+        Frame frame = new Frame("Employee details");
+        FrameController frameController = new FrameController(frame);
     }
 }

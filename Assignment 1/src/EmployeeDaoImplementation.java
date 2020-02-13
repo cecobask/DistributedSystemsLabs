@@ -1,28 +1,20 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class EmployeeDaoImplementation implements EmployeeDao {
     private final Connection conn = DatabaseConnection.createConnection();
 
     @Override
-    public boolean addEmployee(Employee employee) {
+    public void addEmployee(Employee employee) throws SQLException {
         String SQL_ADD_EMPLOYEE = "INSERT INTO employees (ssn, dob, name, address, salary, gender) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement preparedStatement = conn.prepareStatement(SQL_ADD_EMPLOYEE)) {
-            preparedStatement.setString(1, employee.getSsn());
-            preparedStatement.setDate(2, employee.getDob());
-            preparedStatement.setString(3, employee.getName());
-            preparedStatement.setString(4, employee.getAddress());
-            preparedStatement.setInt(5, employee.getSalary());
-            preparedStatement.setString(6, employee.getGender());
-            preparedStatement.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        PreparedStatement preparedStatement = conn.prepareStatement(SQL_ADD_EMPLOYEE);
+        preparedStatement.setString(1, employee.getSsn());
+        preparedStatement.setDate(2, employee.getDob());
+        preparedStatement.setString(3, employee.getName());
+        preparedStatement.setString(4, employee.getAddress());
+        preparedStatement.setInt(5, employee.getSalary());
+        preparedStatement.setString(6, employee.getGender());
+        preparedStatement.executeUpdate();
     }
 
     @Override
@@ -74,7 +66,7 @@ public class EmployeeDaoImplementation implements EmployeeDao {
         String SQL_UPDATE_EMPLOYEE = "UPDATE employees SET ssn=?, dob=?, name=?, address=?, salary=?, gender=? WHERE ssn=?";
         try (PreparedStatement preparedStatement = conn.prepareStatement(SQL_UPDATE_EMPLOYEE)) {
             preparedStatement.setString(1, employee.getSsn());
-            preparedStatement.setDate(2, employee.getDob());
+            preparedStatement.setDate(2, (Date) employee.getDob());
             preparedStatement.setString(3, employee.getName());
             preparedStatement.setString(4, employee.getAddress());
             preparedStatement.setInt(5, employee.getSalary());
