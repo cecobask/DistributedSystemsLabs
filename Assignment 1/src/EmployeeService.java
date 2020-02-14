@@ -9,6 +9,7 @@ public class EmployeeService {
         employeeDaoImplementation.addEmployee(employee);
     }
 
+    @SuppressWarnings("unused")
     public Employee getEmployeeBySSN(String ssn) {
         return employeeDaoImplementation.getEmployeeBySSN(ssn);
     }

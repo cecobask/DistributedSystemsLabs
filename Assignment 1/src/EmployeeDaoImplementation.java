@@ -1,10 +1,9 @@
 import java.sql.*;
 import java.util.ArrayList;
 
-public class EmployeeDaoImplementation implements EmployeeDao {
+public class EmployeeDaoImplementation {
     private final Connection conn = DatabaseConnection.createConnection();
 
-    @Override
     public void addEmployee(Employee employee) throws SQLException {
         String SQL_ADD_EMPLOYEE = "INSERT INTO employees (ssn, dob, name, address, salary, gender) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = conn.prepareStatement(SQL_ADD_EMPLOYEE);
@@ -12,7 +11,6 @@ public class EmployeeDaoImplementation implements EmployeeDao {
         preparedStatement.executeUpdate();
     }
 
-    @Override
     public Employee getEmployeeBySSN(String ssn) {
         Employee employee = new Employee();
         String SQL_GET_EMPLOYEE_BY_SSN = "SELECT * FROM employees WHERE ssn=?";
@@ -28,7 +26,6 @@ public class EmployeeDaoImplementation implements EmployeeDao {
         return employee;
     }
 
-    @Override
     public ArrayList<Employee> getAllEmployees() {
         ArrayList<Employee> allEmployees = new ArrayList<>();
         String SQL_GET_ALL_EMPLOYEES = "SELECT * FROM employees";
@@ -45,7 +42,6 @@ public class EmployeeDaoImplementation implements EmployeeDao {
         return allEmployees;
     }
 
-    @Override
     public boolean updateEmployee(Employee employee) {
         boolean result = false;
         String SQL_UPDATE_EMPLOYEE = "UPDATE employees SET ssn=?, dob=?, name=?, address=?, salary=?, gender=? WHERE ssn=?";
@@ -60,7 +56,6 @@ public class EmployeeDaoImplementation implements EmployeeDao {
         return result;
     }
 
-    @Override
     public boolean deleteEmployee(String ssn) {
         boolean result = false;
         String SQL_DELETE_EMPLOYEE = "DELETE FROM employees WHERE ssn=?";

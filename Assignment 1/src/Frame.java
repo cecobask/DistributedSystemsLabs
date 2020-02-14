@@ -6,7 +6,7 @@ import java.awt.*;
 public class Frame {
 
     // Declare Swing components.
-    private JFrame frame;
+    private final JFrame frame;
     private JPanel panel;
     private JLabel ssnLabel;
     private JLabel dobLabel;
@@ -126,179 +126,59 @@ public class Frame {
         femaleRadioButton.setActionCommand("F");
     }
 
-    public JFrame getFrame() {
-        return frame;
-    }
-
-    public void setFrame(JFrame frame) {
-        this.frame = frame;
-    }
-
-    public JPanel getPanel() {
-        return panel;
-    }
-
-    public void setPanel(JPanel panel) {
-        this.panel = panel;
-    }
-
-    public JLabel getSsnLabel() {
-        return ssnLabel;
-    }
-
-    public void setSsnLabel(JLabel ssnLabel) {
-        this.ssnLabel = ssnLabel;
-    }
-
-    public JLabel getDobLabel() {
-        return dobLabel;
-    }
-
-    public void setDobLabel(JLabel dobLabel) {
-        this.dobLabel = dobLabel;
-    }
-
-    public JLabel getNameLabel() {
-        return nameLabel;
-    }
-
-    public void setNameLabel(JLabel nameLabel) {
-        this.nameLabel = nameLabel;
-    }
-
-    public JLabel getAddressLabel() {
-        return addressLabel;
-    }
-
-    public void setAddressLabel(JLabel addressLabel) {
-        this.addressLabel = addressLabel;
-    }
-
-    public JLabel getSalaryLabel() {
-        return salaryLabel;
-    }
-
-    public void setSalaryLabel(JLabel salaryLabel) {
-        this.salaryLabel = salaryLabel;
-    }
-
-    public JLabel getGenderLabel() {
-        return genderLabel;
-    }
-
-    public void setGenderLabel(JLabel genderLabel) {
-        this.genderLabel = genderLabel;
-    }
-
     public JTextField getSsnTextField() {
         return ssnTextField;
-    }
-
-    public void setSsnTextField(JTextField ssnTextField) {
-        this.ssnTextField = ssnTextField;
     }
 
     public JTextField getDobTextField() {
         return dobTextField;
     }
 
-    public void setDobTextField(JTextField dobTextField) {
-        this.dobTextField = dobTextField;
-    }
-
     public JTextField getNameTextField() {
         return nameTextField;
-    }
-
-    public void setNameTextField(JTextField nameTextField) {
-        this.nameTextField = nameTextField;
     }
 
     public JTextField getAddressTextField() {
         return addressTextField;
     }
 
-    public void setAddressTextField(JTextField addressTextField) {
-        this.addressTextField = addressTextField;
-    }
-
     public JTextField getSalaryTextField() {
         return salaryTextField;
-    }
-
-    public void setSalaryTextField(JTextField salaryTextField) {
-        this.salaryTextField = salaryTextField;
     }
 
     public JRadioButton getMaleRadioButton() {
         return maleRadioButton;
     }
 
-    public void setMaleRadioButton(JRadioButton maleRadioButton) {
-        this.maleRadioButton = maleRadioButton;
-    }
-
     public JRadioButton getFemaleRadioButton() {
         return femaleRadioButton;
-    }
-
-    public void setFemaleRadioButton(JRadioButton femaleRadioButton) {
-        this.femaleRadioButton = femaleRadioButton;
     }
 
     public ButtonGroup getGenderGroup() {
         return genderGroup;
     }
 
-    public void setGenderGroup(ButtonGroup genderGroup) {
-        this.genderGroup = genderGroup;
-    }
-
     public JButton getNextButton() {
         return nextButton;
-    }
-
-    public void setNextButton(JButton nextButton) {
-        this.nextButton = nextButton;
     }
 
     public JButton getPreviousButton() {
         return previousButton;
     }
 
-    public void setPreviousButton(JButton previousButton) {
-        this.previousButton = previousButton;
-    }
-
     public JButton getClearButton() {
         return clearButton;
-    }
-
-    public void setClearButton(JButton clearButton) {
-        this.clearButton = clearButton;
     }
 
     public JButton getAddButton() {
         return addButton;
     }
 
-    public void setAddButton(JButton addButton) {
-        this.addButton = addButton;
-    }
-
     public JButton getDeleteButton() {
         return deleteButton;
     }
 
-    public void setDeleteButton(JButton deleteButton) {
-        this.deleteButton = deleteButton;
-    }
-
     public JButton getUpdateButton() {
         return updateButton;
-    }
-
-    public void setUpdateButton(JButton updateButton) {
-        this.updateButton = updateButton;
     }
 }
