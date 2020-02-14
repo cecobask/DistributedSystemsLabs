@@ -10,7 +10,7 @@ public class Employee {
     private String address;
     private int salary;
     private String gender;
-    private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+    private final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
     public Employee(String ssn, Date dob, String name, String address, int salary, String gender) {
         this.ssn = ssn;
