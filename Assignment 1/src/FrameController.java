@@ -1,4 +1,8 @@
+import javax.print.Doc;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.Document;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
@@ -6,7 +10,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-public class FrameController implements ActionListener {
+public class FrameController implements ActionListener, DocumentListener {
 
     private JTextField ssnTextField;
     private JTextField dobTextField;
@@ -32,6 +36,7 @@ public class FrameController implements ActionListener {
         addActionListeners( // Add click listeners to the buttons.
                 new JButton[]{previousButton, clearButton, nextButton, deleteButton, addButton, updateButton}
         );
+        ssnTextField.getDocument().addDocumentListener(this); // Listen for text changes.
         loadData();
     }
 
@@ -230,6 +235,27 @@ public class FrameController implements ActionListener {
                 return;
             }
             updateEmployee(new Employee());
+        }
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent documentEvent) { handleChange(documentEvent); }
+
+    @Override
+    public void removeUpdate(DocumentEvent documentEvent) { handleChange(documentEvent); }
+
+    @Override
+    public void changedUpdate(DocumentEvent documentEvent) {}
+
+    private void handleChange(DocumentEvent e) {
+        Document doc = e.getDocument();
+
+        if (doc.getLength() == 0) { // 'SSN' field is empty.
+            enableDisableButtons(new JButton[0], new JButton[]{deleteButton, updateButton, addButton});
+        } else if (doc.getLength() > 0 && employees.isEmpty()) { // 'SSN' field is not empty, but the table is.
+            enableDisableButtons(new JButton[]{addButton}, new JButton[]{updateButton, deleteButton});
+        } else { // Both 'SSN' input field and table are not empty.
+            enableDisableButtons(new JButton[]{deleteButton, updateButton, addButton}, new JButton[0]);
         }
     }
 }
