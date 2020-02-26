@@ -1,7 +1,6 @@
-package Ex2;
+package ex2;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,49 +10,56 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Date;
 
-public class ClientEx2 extends JFrame implements ActionListener {
+public class Client extends Thread implements ActionListener {
 
     private JTextField jtf = new JTextField();
     private JTextArea jta = new JTextArea();
-    private JButton exitBtn = new JButton("EXIT");
     private JButton sendBtn = new JButton("SEND");
 
     // IO streams
     private DataOutputStream toServer;
-    private DataInputStream fromServer;
 
     public static void main(String[] args) {
-        new ClientEx2();
+        new Client();
     }
 
-    public ClientEx2() {
+    public Client() {
         JPanel p = new JPanel();
+        JFrame frame = new JFrame();
         p.setLayout(new BorderLayout());
         p.add(sendBtn, BorderLayout.EAST);
+        JButton exitBtn = new JButton("EXIT");
         p.add(exitBtn, BorderLayout.WEST);
         p.add(new JScrollPane(jta), BorderLayout.CENTER);
         p.add(jtf, BorderLayout.PAGE_END);
-        setLayout(new BorderLayout());
-        add(p, BorderLayout.CENTER);
+        frame.setLayout(new BorderLayout());
+        frame.add(p, BorderLayout.CENTER);
 
         sendBtn.addActionListener(this);
         exitBtn.addActionListener(this);
 
-        setTitle("Client");
-        setSize(600, 300);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true); // It is necessary to show the frame here!
+        frame.setTitle("Ex1.Client");
+        frame.setSize(600, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true); // It is necessary to show the frame here!
 
         try {
             // Create a socket to connect to the server
             Socket socket = new Socket("localhost", 8000);
 
             // Create an input stream to receive data from the server
-            fromServer = new DataInputStream(socket.getInputStream());
+            DataInputStream fromServer = new DataInputStream(socket.getInputStream());
 
             // Create an output stream to send data to the server
             toServer = new DataOutputStream(socket.getOutputStream());
             jta.append("> Connected to localhost:8000 at " + new Date() + "\n");
+
+            while (true) {
+                // Receive message from the client.
+                String message = fromServer.readUTF();
+
+                if (!message.isEmpty()) jta.append("[server]: " + message + "\n");
+            }
         } catch (IOException ex) {
             jta.append("> " + ex.toString() + '\n');
         }
@@ -72,15 +78,20 @@ public class ClientEx2 extends JFrame implements ActionListener {
                 toServer.writeUTF(message);
                 toServer.flush();
 
-                jta.append("> Sent message '" + message + "' to the server.\n");
-                jta.append(fromServer.readUTF());
+                jta.append("[client]: " + message + "\n");
             } catch (IOException ex) {
                 ex.printStackTrace();
             } catch (NullPointerException ex) {
                 jta.append("> Not connected to the server.\n");
             }
+            jtf.setText(""); // Clear input box.
         } else {
             System.exit(0);
         }
+    }
+
+    @Override
+    public void run() {
+
     }
 }

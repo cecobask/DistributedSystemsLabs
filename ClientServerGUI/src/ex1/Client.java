@@ -1,3 +1,5 @@
+package ex1;
+
 import java.io.*;
 import java.net.*;
 import java.awt.*;
@@ -33,7 +35,7 @@ public class Client extends JFrame {
 
         jtf.addActionListener(new Listener()); // Register listener
 
-        setTitle("Client");
+        setTitle("Ex1.Client");
         setSize(500, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true); // It is necessary to show the frame here!

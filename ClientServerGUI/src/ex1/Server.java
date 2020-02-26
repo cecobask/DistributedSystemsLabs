@@ -1,28 +1,25 @@
-package Ex2;
+package ex1;
 
-import javax.swing.*;
+import java.io.*;
+import java.net.*;
+import java.util.*;
 import java.awt.*;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Date;
+import javax.swing.*;
 
-public class ServerEx2 extends JFrame {
+public class Server extends JFrame {
 
   public static void main(String[] args) {
-    new ServerEx2();
+    new Server();
   }
 
-  public ServerEx2() {
+  public Server() {
     // Place text area on the frame
     setLayout(new BorderLayout());
     // Text area for displaying contents
     JTextArea jta = new JTextArea();
     add(new JScrollPane(jta), BorderLayout.CENTER);
 
-    setTitle("Server");
+    setTitle("Ex1.Server");
     setSize(500, 300);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setVisible(true); // It is necessary to show the frame here!
@@ -30,11 +27,10 @@ public class ServerEx2 extends JFrame {
     try {
       // Create a server socket
       ServerSocket serverSocket = new ServerSocket(8000);
-      jta.append("> Server started on " + new Date() + '\n');
+      jta.append("Ex1.Server started at " + new Date() + '\n');
 
       // Listen for a connection request
       Socket socket = serverSocket.accept();
-      jta.append("> Connected to client.\n");
 
       // Create data input and output streams
       DataInputStream inputFromClient = new DataInputStream(
@@ -43,15 +39,21 @@ public class ServerEx2 extends JFrame {
         socket.getOutputStream());
 
       while (true) {
-        // Receive message from the client.
-        String message = inputFromClient.readUTF();
+        // Receive radius from the client
+        double radius = inputFromClient.readDouble();
 
-        if (!message.isEmpty()) jta.append("> Message from client: '" + message + "'\n");
-        outputToClient.writeUTF("> Message received.\n");
+        // Compute area
+        double area = radius * radius * Math.PI;
+
+        // Send area back to the client
+        outputToClient.writeDouble(area);
+
+        jta.append("Radius received from client: " + radius + '\n');
+        jta.append("Area found: " + area + '\n');
       }
     }
     catch(IOException ex) {
-      ex.printStackTrace();
+      System.err.println(ex);
     }
   }
 }
