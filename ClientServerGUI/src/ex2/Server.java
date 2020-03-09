@@ -13,11 +13,7 @@ import java.util.Date;
 
 public class Server extends JFrame implements ActionListener {
 
-    private JTextField jtf = new JTextField();
     private JTextArea jta = new JTextArea();
-    private JButton sendBtn = new JButton("SEND");
-
-    private DataOutputStream toClient;
 
     public static void main(String[] args) {
         new Server();
@@ -26,18 +22,17 @@ public class Server extends JFrame implements ActionListener {
     public Server() {
         JPanel p = new JPanel();
         p.setLayout(new BorderLayout());
-        p.add(sendBtn, BorderLayout.EAST);
         JButton exitBtn = new JButton("EXIT");
         p.add(exitBtn, BorderLayout.WEST);
         p.add(new JScrollPane(jta), BorderLayout.CENTER);
+        JTextField jtf = new JTextField();
         p.add(jtf, BorderLayout.PAGE_END);
         setLayout(new BorderLayout());
         add(p, BorderLayout.CENTER);
 
-        sendBtn.addActionListener(this);
         exitBtn.addActionListener(this);
 
-        setTitle("Ex1.Server");
+        setTitle("Server");
         setSize(500, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true); // It is necessary to show the frame here!
@@ -45,23 +40,15 @@ public class Server extends JFrame implements ActionListener {
         try {
             // Create a server socket.
             ServerSocket serverSocket = new ServerSocket(8000);
-            jta.append("> Ex1.Server started on " + new Date() + '\n');
-
-            // Listen for a connection request.
-            Socket socket = serverSocket.accept();
-            jta.append("> Connected to the client.\n");
-
-            // Create data input and output streams.
-            DataInputStream fromClient = new DataInputStream(
-                    socket.getInputStream());
-            toClient = new DataOutputStream(
-                    socket.getOutputStream());
+            jta.append("> Server started on " + new Date() + '\n');
 
             while (true) {
-                // Receive message from the client.
-                String message = fromClient.readUTF();
+                // Listen for connection requests.
+                Socket socket = serverSocket.accept();
+                jta.append("> Connected to a new client#localhost:" + socket.getPort() + ")\n");
 
-                if (!message.isEmpty()) jta.append("[client]: " + message + "\n");
+                ClientThread clientThread = new ClientThread(socket);
+                clientThread.start();
             }
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -70,27 +57,37 @@ public class Server extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == sendBtn) {
+        System.exit(0);
+    }
+
+    private class ClientThread extends Thread {
+        //The socket the client is connected through
+        private Socket socket;
+        //The input and output streams to the client
+        private DataInputStream inputFromClient;
+        private DataOutputStream outputToClient;
+
+        // The Constructor for the client
+        public ClientThread(Socket socket) throws IOException {
+            this.socket = socket;
+            inputFromClient = new DataInputStream(socket.getInputStream());
+            outputToClient = new DataOutputStream(socket.getOutputStream());
+        }
+
+        public void run() {
             try {
-                // Get the text from jtf.
-                String message = jtf.getText().trim();
+                while (true) {
+                    // Receive messages from the client.
+                    String message = inputFromClient.readUTF();
 
-                if (message.isEmpty()) return;
+                    if (!message.isEmpty()) jta.append("[client#localhost:" + socket.getPort() + "]: " + message + "\n");
 
-                // Send the message to the client.
-                toClient.writeUTF(message);
-                toClient.flush();
-
-                jta.append("[server]: " + message + "\n");
-                jtf.setText("");
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            } catch (NullPointerException ex) {
-                jta.append("> Not connected to the client.\n");
+                    // TODO: replace with area of a circle.
+                    outputToClient.writeUTF("hello! test");
+                }
+            } catch (Exception e) {
+                System.err.println(e + " on " + socket);
             }
-            jtf.setText(""); // Clear input box.
-        } else {
-            System.exit(0);
         }
     }
 }

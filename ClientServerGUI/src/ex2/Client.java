@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Date;
 
-public class Client extends Thread implements ActionListener {
+public class Client implements ActionListener {
 
     private JTextField jtf = new JTextField();
     private JTextArea jta = new JTextArea();
@@ -38,7 +38,7 @@ public class Client extends Thread implements ActionListener {
         sendBtn.addActionListener(this);
         exitBtn.addActionListener(this);
 
-        frame.setTitle("Ex1.Client");
+        frame.setTitle("Client");
         frame.setSize(600, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true); // It is necessary to show the frame here!
@@ -88,10 +88,5 @@ public class Client extends Thread implements ActionListener {
         } else {
             System.exit(0);
         }
-    }
-
-    @Override
-    public void run() {
-
     }
 }
