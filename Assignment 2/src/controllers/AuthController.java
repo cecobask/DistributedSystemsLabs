@@ -68,8 +68,9 @@ public class AuthController implements ActionListener, DocumentListener {
             if (studentIDs.contains(studentID)) {
                 feedbackArea.append("> Successful authentication!\n");
                 authFrame.dispose(); // Close the Authentication window.
-                ClientFrame clientFrame = new ClientFrame("Client"); // Open the Client window.
-                new ClientController(clientFrame, studentService.getStudentByStudID(studentID));
+                // Open the Client window using a Thread.
+                ClientFrame clientFrame = new ClientFrame("Client");
+                new Thread(() -> new ClientController(clientFrame, studentService.getStudentByStudID(studentID))).start();
             } else {
                 feedbackArea.append("> Failed to authenticate! This student number is not in the database.\n");
             }
@@ -82,13 +83,18 @@ public class AuthController implements ActionListener, DocumentListener {
     }
 
     @Override
-    public void insertUpdate(DocumentEvent documentEvent) { handleChange(documentEvent); }
+    public void insertUpdate(DocumentEvent documentEvent) {
+        handleChange(documentEvent);
+    }
 
     @Override
-    public void removeUpdate(DocumentEvent documentEvent) { handleChange(documentEvent); }
+    public void removeUpdate(DocumentEvent documentEvent) {
+        handleChange(documentEvent);
+    }
 
     @Override
-    public void changedUpdate(DocumentEvent documentEvent) {}
+    public void changedUpdate(DocumentEvent documentEvent) {
+    }
 
     private void handleChange(DocumentEvent e) {
         // Disables the button if studentIdField is empty.

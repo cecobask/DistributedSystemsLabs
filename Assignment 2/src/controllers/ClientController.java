@@ -19,12 +19,10 @@ public class ClientController implements ActionListener, DocumentListener {
     private JTextField circleRadiusField;
     private JTextArea feedbackArea;
     private JButton sendButton;
-    private Student student;
     private DataOutputStream toServer;
 
     public ClientController(ClientFrame frame, Student student) {
         initComponents(frame);
-        this.student = student;
 
         feedbackArea.append("> Welcome, " + student.getFirstName() + " " + student.getLastName() + "!\n");
 
@@ -79,7 +77,7 @@ public class ClientController implements ActionListener, DocumentListener {
             feedbackArea.append("[client]: " + circleRadius + "\n");
             circleRadiusField.setText("");
         } catch (NumberFormatException e) {
-            showMessageDialog("Circle's radius must be of numeric format! Please enter a number.");
+            showMessageDialog("A circle's radius must be of numeric format! Please enter a number.");
             circleRadiusField.setText("");
         } catch (IOException ex) {
             ex.printStackTrace();
