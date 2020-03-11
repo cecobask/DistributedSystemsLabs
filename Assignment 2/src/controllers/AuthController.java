@@ -10,7 +10,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +26,6 @@ public class AuthController implements ActionListener, DocumentListener {
     public AuthController(AuthFrame frame) {
         initComponents(frame);
         submitButton.addActionListener(this); // Add click listener to the button.
-        submitButton.setEnabled(false); // Disabled by default.
         studentIdField.getDocument().addDocumentListener(this); // Listen for text changes.
         loadData();
     }
@@ -35,6 +33,7 @@ public class AuthController implements ActionListener, DocumentListener {
     private void initComponents(AuthFrame frame) {
         studentIdField = frame.getStudentIdField();
         submitButton = frame.getSubmitButton();
+        submitButton.setEnabled(false); // Disabled by default.
         feedbackArea = frame.getFeedbackArea();
         authFrame = frame.getAuthFrame();
     }
@@ -49,7 +48,7 @@ public class AuthController implements ActionListener, DocumentListener {
         }
 
         feedbackArea.append("> The application is ready!\n" +
-                "> Please enter your student number in the text box above to proceed.\n"
+                "> Please, enter your student number in the text box above to proceed.\n"
         );
     }
 
@@ -60,16 +59,17 @@ public class AuthController implements ActionListener, DocumentListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         try {
-            String idInput = studentIdField.getText();
+            int studentID = Integer.parseInt(studentIdField.getText());
             List<Integer> studentIDs = students.stream() // Create a list with student IDs.
                     .map(Student::getStudID)
                     .collect(Collectors.toList());
 
             // Check if the student ID exists.
-            if (studentIDs.contains(Integer.valueOf(idInput))) {
+            if (studentIDs.contains(studentID)) {
                 feedbackArea.append("> Successful authentication!\n");
                 authFrame.dispose(); // Close the Authentication window.
-                new ClientFrame("Client"); // Open the Client window.
+                ClientFrame clientFrame = new ClientFrame("Client"); // Open the Client window.
+                new ClientController(clientFrame, studentService.getStudentByStudID(studentID));
             } else {
                 feedbackArea.append("> Failed to authenticate! This student number is not in the database.\n");
             }

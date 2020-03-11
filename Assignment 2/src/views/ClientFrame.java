@@ -1,5 +1,7 @@
 package views;
 
+import models.Student;
+
 import javax.swing.*;
 import java.awt.*;
 
