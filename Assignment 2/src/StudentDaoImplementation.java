@@ -15,11 +15,11 @@ public class StudentDaoImplementation {
         preparedStatement.executeUpdate();
     }
 
-    public Student getStudentBySID(int sid) {
+    public Student getStudentByStudID(int studID) {
         Student student = new Student();
-        String SQL_GET_STUDENT_BY_SID = "SELECT * FROM students WHERE SID=?";
-        try (PreparedStatement preparedStatement = conn.prepareStatement(SQL_GET_STUDENT_BY_SID)) {
-            preparedStatement.setInt(1, sid);
+        String SQL_GET_STUDENT_BY_STUD_ID = "SELECT * FROM students WHERE STUD_ID=?";
+        try (PreparedStatement preparedStatement = conn.prepareStatement(SQL_GET_STUDENT_BY_STUD_ID)) {
+            preparedStatement.setInt(1, studID);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 constructStudentObject(student, rs);
@@ -50,10 +50,10 @@ public class StudentDaoImplementation {
 
     public boolean updateStudent(Student student) {
         boolean result = false;
-        String SQL_UPDATE_STUDENT = "UPDATE students SET SID=?, STUD_ID=?, FNAME=?, SNAME=? WHERE SID=?";
+        String SQL_UPDATE_STUDENT = "UPDATE students SET SID=?, STUD_ID=?, FNAME=?, SNAME=? WHERE STUD_ID=?";
         try (PreparedStatement preparedStatement = conn.prepareStatement(SQL_UPDATE_STUDENT)) {
             setPrepStatParams(preparedStatement, student);
-            preparedStatement.setInt(5, student.getSID());
+            preparedStatement.setInt(5, student.getStudID());
             result = preparedStatement.executeUpdate() == 1;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -62,11 +62,11 @@ public class StudentDaoImplementation {
         return result;
     }
 
-    public boolean deleteStudent(int sid) {
+    public boolean deleteStudent(int studID) {
         boolean result = false;
-        String SQL_DELETE_STUDENT = "DELETE FROM students WHERE SID=?";
+        String SQL_DELETE_STUDENT = "DELETE FROM students WHERE STUD_ID=?";
         try (PreparedStatement preparedStatement = conn.prepareStatement(SQL_DELETE_STUDENT)) {
-            preparedStatement.setInt(1, sid);
+            preparedStatement.setInt(1, studID);
             result = preparedStatement.executeUpdate() == 1;
         } catch (SQLException e) {
             e.printStackTrace();

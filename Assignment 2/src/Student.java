@@ -12,6 +12,16 @@ public class Student {
         this.lastName = lastName;
     }
 
+    @Override
+    public String toString() {
+        return "Student{" +
+                "SID=" + SID +
+                ", studID=" + studID +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
+    }
+
     public Student() {}
 
     public int getSID() {

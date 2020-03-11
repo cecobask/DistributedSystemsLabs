@@ -9,8 +9,8 @@ public class StudentService {
         studentDaoImplementation.addStudent(student);
     }
 
-    public Student getStudentBySID(String sid) {
-        return studentDaoImplementation.getStudentBySID(sid);
+    public Student getStudentByStudID(int studID) {
+        return studentDaoImplementation.getStudentByStudID(studID);
     }
 
     public ArrayList<Student> getAllStudents() {
@@ -21,7 +21,7 @@ public class StudentService {
         return studentDaoImplementation.updateStudent(student);
     }
 
-    public boolean deleteStudent(String sid) {
-        return studentDaoImplementation.deleteStudent(sid);
+    public boolean deleteStudent(int studID) {
+        return studentDaoImplementation.deleteStudent(studID);
     }
 }
