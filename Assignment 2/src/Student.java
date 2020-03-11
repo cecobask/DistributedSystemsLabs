@@ -1,16 +1,18 @@
 public class Student {
 
     private int SID;
-    private int STUD_ID;
-    private String FNAME;
-    private String SNAME;
+    private int studID;
+    private String firstName;
+    private String lastName;
 
-    public Student(int SID, int STUD_ID, String FNAME, String SNAME) {
+    public Student(int SID, int studID, String firstName, String lastName) {
         this.SID = SID;
-        this.STUD_ID = STUD_ID;
-        this.FNAME = FNAME;
-        this.SNAME = SNAME;
+        this.studID = studID;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
+
+    public Student() {}
 
     public int getSID() {
         return SID;
@@ -20,27 +22,27 @@ public class Student {
         this.SID = SID;
     }
 
-    public int getSTUD_ID() {
-        return STUD_ID;
+    public int getStudID() {
+        return studID;
     }
 
-    public void setSTUD_ID(int STUD_ID) {
-        this.STUD_ID = STUD_ID;
+    public void setStudID(int studID) {
+        this.studID = studID;
     }
 
-    public String getFNAME() {
-        return FNAME;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFNAME(String FNAME) {
-        this.FNAME = FNAME;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getSNAME() {
-        return SNAME;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSNAME(String SNAME) {
-        this.SNAME = SNAME;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }
