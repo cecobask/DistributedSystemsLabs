@@ -1,3 +1,8 @@
+package db;
+
+import db.DatabaseConnection;
+import models.Student;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

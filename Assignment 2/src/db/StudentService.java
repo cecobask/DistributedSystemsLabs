@@ -1,3 +1,7 @@
+package db;
+
+import models.Student;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
