@@ -3,25 +3,32 @@ package controllers;
 import db.StudentService;
 import models.Student;
 import views.AuthFrame;
+import views.ClientFrame;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AuthController implements ActionListener {
+public class AuthController implements ActionListener, DocumentListener {
 
     private JTextField studentIdField;
     private JButton submitButton;
     private JTextArea feedbackArea;
+    private JFrame authFrame;
     private ArrayList<Student> students = new ArrayList<>();
     private final StudentService studentService = new StudentService();
 
     public AuthController(AuthFrame frame) {
         initComponents(frame);
         submitButton.addActionListener(this); // Add click listener to the button.
+        submitButton.setEnabled(false); // Disabled by default.
+        studentIdField.getDocument().addDocumentListener(this); // Listen for text changes.
         loadData();
     }
 
@@ -29,6 +36,7 @@ public class AuthController implements ActionListener {
         studentIdField = frame.getStudentIdField();
         submitButton = frame.getSubmitButton();
         feedbackArea = frame.getFeedbackArea();
+        authFrame = frame.getAuthFrame();
     }
 
     private void loadData() {
@@ -40,8 +48,8 @@ public class AuthController implements ActionListener {
             return;
         }
 
-        feedbackArea.append("The application is ready!\n" +
-                "Please enter your student number in the text box above to proceed.\n"
+        feedbackArea.append("> The application is ready!\n" +
+                "> Please enter your student number in the text box above to proceed.\n"
         );
     }
 
@@ -59,9 +67,11 @@ public class AuthController implements ActionListener {
 
             // Check if the student ID exists.
             if (studentIDs.contains(Integer.valueOf(idInput))) {
-                feedbackArea.append("Successful authentication!\n");
+                feedbackArea.append("> Successful authentication!\n");
+                authFrame.dispose(); // Close the Authentication window.
+                new ClientFrame("Client"); // Open the Client window.
             } else {
-                feedbackArea.append("Failed to authenticate! This student number is not in the database.\n");
+                feedbackArea.append("> Failed to authenticate! This student number is not in the database.\n");
             }
 
             studentIdField.setText("");
@@ -69,5 +79,19 @@ public class AuthController implements ActionListener {
             showMessageDialog("Student IDs are of numeric format! Please enter a valid student number.");
             studentIdField.setText("");
         }
+    }
+
+    @Override
+    public void insertUpdate(DocumentEvent documentEvent) { handleChange(documentEvent); }
+
+    @Override
+    public void removeUpdate(DocumentEvent documentEvent) { handleChange(documentEvent); }
+
+    @Override
+    public void changedUpdate(DocumentEvent documentEvent) {}
+
+    private void handleChange(DocumentEvent e) {
+        // Disables the button if studentIdField is empty.
+        submitButton.setEnabled(e.getDocument().getLength() != 0);
     }
 }
