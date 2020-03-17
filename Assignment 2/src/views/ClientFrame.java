@@ -1,7 +1,5 @@
 package views;
 
-import models.Student;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -48,14 +46,6 @@ public class ClientFrame {
         for (JComponent component : components) {
             panel.add(component);
         }
-    }
-
-    public JFrame getClientFrame() {
-        return clientFrame;
-    }
-
-    public JPanel getPanel() {
-        return panel;
     }
 
     public JTextField getCircleRadiusField() {

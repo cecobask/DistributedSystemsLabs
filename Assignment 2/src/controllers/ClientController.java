@@ -63,10 +63,6 @@ public class ClientController implements ActionListener, DocumentListener {
         }
     }
 
-    private void showMessageDialog(String message) {
-        JOptionPane.showMessageDialog(null, message);
-    }
-
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         try {
@@ -77,7 +73,10 @@ public class ClientController implements ActionListener, DocumentListener {
             feedbackArea.append("[client]: " + circleRadius + "\n");
             circleRadiusField.setText("");
         } catch (NumberFormatException e) {
-            showMessageDialog("A circle's radius must be of numeric format! Please enter a number.");
+            JOptionPane.showMessageDialog(
+                    null,
+                    "A circle's radius must be of numeric format! Please enter a number."
+            );
             circleRadiusField.setText("");
         } catch (IOException ex) {
             ex.printStackTrace();

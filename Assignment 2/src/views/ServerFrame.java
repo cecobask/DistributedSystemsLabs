@@ -6,12 +6,11 @@ import java.awt.*;
 public class ServerFrame {
 
     // Declare Swing components.
-    private JFrame serverFrame;
     private JPanel panel;
     private JTextArea feedbackArea;
 
     public ServerFrame(String title) {
-        serverFrame = new JFrame(title); // Set frame title.
+        JFrame serverFrame = new JFrame(title); // Set frame title.
 
         initComponents();
 

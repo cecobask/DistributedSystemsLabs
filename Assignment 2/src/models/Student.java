@@ -16,7 +16,7 @@ public class Student {
 
     @Override
     public String toString() {
-        return "models.Student{" +
+        return "Student{" +
                 "SID=" + SID +
                 ", studID=" + studID +
                 ", firstName='" + firstName + '\'' +
