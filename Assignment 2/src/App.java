@@ -3,8 +3,17 @@ import controllers.ServerController;
 import views.AuthFrame;
 import views.ServerFrame;
 
+/**
+ * @author Tsvetoslav Dimov
+ * Student ID: 20077038
+ * Module: Distributed Systems
+ */
 public class App {
 
+    /**
+     * Main method, used to run the application. It creates two Authentication windows and a Server window.
+     * @param args String[]
+     */
     public static void main(String[] args) {
         // Launch two Authentication screens.
         AuthFrame authFrame = new AuthFrame("Authentication 1");

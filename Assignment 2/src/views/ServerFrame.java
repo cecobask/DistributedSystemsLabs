@@ -3,6 +3,11 @@ package views;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * @author Tsvetoslav Dimov
+ * Student ID: 20077038
+ * Module: Distributed Systems
+ */
 public class ServerFrame {
 
     // Declare Swing components.
@@ -14,6 +19,7 @@ public class ServerFrame {
 
         initComponents();
 
+        // Frame specific settings.
         serverFrame.setSize(new Dimension(500, 300));
         serverFrame.add(panel);
         serverFrame.pack();
@@ -22,6 +28,9 @@ public class ServerFrame {
         serverFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    /**
+     * Initialise all Swing components used by the frame.
+     */
     private void initComponents() {
         feedbackArea = new JTextArea(20, 50);
         feedbackArea.setEditable(false);
