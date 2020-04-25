@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package services;
+package com.bask.customerdb.service;
 
-import entities.Customer;
+import com.bask.customerdb.MicroMarket;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -25,54 +25,54 @@ import javax.ws.rs.core.MediaType;
  * @author bask
  */
 @Stateless
-@Path("entities.customer")
-public class CustomerFacadeREST extends AbstractFacade<Customer> {
+@Path("com.bask.customerdb.micromarket")
+public class MicroMarketFacadeREST extends AbstractFacade<MicroMarket> {
 
     @PersistenceContext(unitName = "com.bask_CustomerDB_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
-    public CustomerFacadeREST() {
-        super(Customer.class);
+    public MicroMarketFacadeREST() {
+        super(MicroMarket.class);
     }
 
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Customer entity) {
+    public void create(MicroMarket entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Customer entity) {
+    public void edit(@PathParam("id") String id, MicroMarket entity) {
         super.edit(entity);
     }
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
+    public void remove(@PathParam("id") String id) {
         super.remove(super.find(id));
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Customer find(@PathParam("id") Integer id) {
+    public MicroMarket find(@PathParam("id") String id) {
         return super.find(id);
     }
 
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Customer> findAll() {
+    public List<MicroMarket> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Customer> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<MicroMarket> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 

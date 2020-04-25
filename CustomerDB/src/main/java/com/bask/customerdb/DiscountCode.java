@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entities;
+package com.bask.customerdb;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -102,7 +102,7 @@ public class DiscountCode implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.DiscountCode[ discountCode=" + discountCode + " ]";
+        return "com.bask.customerdb.DiscountCode[ discountCode=" + discountCode + " ]";
     }
     
 }

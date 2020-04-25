@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entities;
+package com.bask.customerdb;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -123,7 +123,7 @@ public class MicroMarket implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.MicroMarket[ zipCode=" + zipCode + " ]";
+        return "com.bask.customerdb.MicroMarket[ zipCode=" + zipCode + " ]";
     }
     
 }

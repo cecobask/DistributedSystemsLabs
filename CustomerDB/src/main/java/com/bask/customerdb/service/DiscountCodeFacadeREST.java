@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package services;
+package com.bask.customerdb.service;
 
-import entities.DiscountCode;
+import com.bask.customerdb.DiscountCode;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -25,7 +25,7 @@ import javax.ws.rs.core.MediaType;
  * @author bask
  */
 @Stateless
-@Path("entities.discountcode")
+@Path("com.bask.customerdb.discountcode")
 public class DiscountCodeFacadeREST extends AbstractFacade<DiscountCode> {
 
     @PersistenceContext(unitName = "com.bask_CustomerDB_war_1.0-SNAPSHOTPU")

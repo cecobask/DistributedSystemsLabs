@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package services;
+package com.bask.customerdb.service;
 
 import java.util.Set;
 import javax.ws.rs.core.Application;
@@ -17,7 +17,7 @@ public class ApplicationConfig extends Application {
 
     @Override
     public Set<Class<?>> getClasses() {
-        Set<Class<?>> resources = new java.util.HashSet<Class<?>>();
+        Set<Class<?>> resources = new java.util.HashSet<>();
         addRestResourceClasses(resources);
         return resources;
     }
@@ -29,9 +29,9 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(services.CustomerFacadeREST.class);
-        resources.add(services.DiscountCodeFacadeREST.class);
-        resources.add(services.MicroMarketFacadeREST.class);
+        resources.add(com.bask.customerdb.service.CustomerFacadeREST.class);
+        resources.add(com.bask.customerdb.service.DiscountCodeFacadeREST.class);
+        resources.add(com.bask.customerdb.service.MicroMarketFacadeREST.class);
     }
     
 }
