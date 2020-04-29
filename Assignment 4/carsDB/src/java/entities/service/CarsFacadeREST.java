@@ -84,10 +84,10 @@ public class CarsFacadeREST extends AbstractFacade<Cars> {
     }
 
     @GET
-    @Path("fetchCarDetails/{cModel}/{cYear}")
+    @Path("fetchCarDetailsByYear/{cModel}/{cYear}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Cars> fetchCarDetails(@PathParam("cModel") String cModel, @PathParam("cYear") int cYear) {
-        return super.fetchCarDetails(cModel, cYear);
+    public List<Cars> fetchCarDetailsByYear(@PathParam("cModel") String cModel, @PathParam("cYear") int cYear) {
+        return super.fetchCarDetailsByYear(cModel, cYear);
     }
 
     @Override

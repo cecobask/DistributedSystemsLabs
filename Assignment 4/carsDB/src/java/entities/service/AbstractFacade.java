@@ -8,6 +8,7 @@ package entities.service;
 import entities.Cars;
 import entities.Users;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -65,22 +66,20 @@ public abstract class AbstractFacade<T> {
         return ((Long) q.getSingleResult()).intValue();
     }
 
-    public T fetchUserDetails(int userID, String password) {
-        return (T) getEntityManager()
+    public Users fetchUserDetails(int userID, String password) {
+        return (Users) getEntityManager()
                 .createNamedQuery("Users.fetchUserDetails")
                 .setParameter("userID", userID)
                 .setParameter("password", password)
                 .getSingleResult();
     }
-    
-    public List<Cars> fetchCarDetails(String cModel, int cYear) {
-        List<Cars> carsList = new ArrayList();
-        Query query = getEntityManager()
-                .createNamedQuery("Cars.fetchCarDetails", Cars.class)
+
+    public List<Cars> fetchCarDetailsByYear(String cModel, int cYear) {
+        return (List<Cars>) getEntityManager()
+                .createNamedQuery("Cars.fetchCarDetailsByYear", Cars.class)
                 .setParameter("cModel", cModel)
-                .setParameter("cYear", cYear);
-        carsList = query.getResultList();
-        return carsList;
+                .setParameter("cYear", cYear)
+                .getResultList();
     }
 
 }
