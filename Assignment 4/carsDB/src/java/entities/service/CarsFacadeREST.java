@@ -83,9 +83,16 @@ public class CarsFacadeREST extends AbstractFacade<Cars> {
         return String.valueOf(super.count());
     }
 
+    @GET
+    @Path("fetchCarDetails/{cModel}/{cYear}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Cars> fetchCarDetails(@PathParam("cModel") String cModel, @PathParam("cYear") int cYear) {
+        return super.fetchCarDetails(cModel, cYear);
+    }
+
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
 }

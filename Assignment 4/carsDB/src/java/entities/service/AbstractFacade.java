@@ -5,9 +5,12 @@
  */
 package entities.service;
 
+import entities.Cars;
 import entities.Users;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 /**
  *
@@ -68,6 +71,16 @@ public abstract class AbstractFacade<T> {
                 .setParameter("userID", userID)
                 .setParameter("password", password)
                 .getSingleResult();
+    }
+    
+    public List<Cars> fetchCarDetails(String cModel, int cYear) {
+        List<Cars> carsList = new ArrayList();
+        Query query = getEntityManager()
+                .createNamedQuery("Cars.fetchCarDetails", Cars.class)
+                .setParameter("cModel", cModel)
+                .setParameter("cYear", cYear);
+        carsList = query.getResultList();
+        return carsList;
     }
 
 }
