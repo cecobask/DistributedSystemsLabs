@@ -82,6 +82,13 @@ public class UsersFacadeREST extends AbstractFacade<Users> {
     public String countREST() {
         return String.valueOf(super.count());
     }
+    
+    @GET
+    @Path("fetchUserDetails/{userID}/{password}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Users fetchUserDetails(@PathParam("userID") int userID, @PathParam("password") String password) {
+        return super.fetchUserDetails(userID, password);
+    }
 
     @Override
     protected EntityManager getEntityManager() {

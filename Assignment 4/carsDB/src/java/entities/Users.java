@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u")
     , @NamedQuery(name = "Users.findByUserID", query = "SELECT u FROM Users u WHERE u.userID = :userID")
+    , @NamedQuery(name = "Users.fetchUserDetails", query = "SELECT u FROM Users u WHERE u.userID = :userID AND u.password = :password")
     , @NamedQuery(name = "Users.findByUsername", query = "SELECT u FROM Users u WHERE u.username = :username")
     , @NamedQuery(name = "Users.findByPassword", query = "SELECT u FROM Users u WHERE u.password = :password")})
 public class Users implements Serializable {
@@ -109,5 +110,5 @@ public class Users implements Serializable {
     public String toString() {
         return "entities.Users[ userID=" + userID + " ]";
     }
-    
+
 }

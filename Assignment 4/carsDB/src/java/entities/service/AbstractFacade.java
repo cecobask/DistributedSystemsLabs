@@ -5,6 +5,7 @@
  */
 package entities.service;
 
+import entities.Users;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -60,5 +61,13 @@ public abstract class AbstractFacade<T> {
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
-    
+
+    public T fetchUserDetails(int userID, String password) {
+        return (T) getEntityManager()
+                .createNamedQuery("Users.fetchUserDetails")
+                .setParameter("userID", userID)
+                .setParameter("password", password)
+                .getSingleResult();
+    }
+
 }
