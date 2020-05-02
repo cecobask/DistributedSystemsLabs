@@ -7,11 +7,8 @@ package entities.service;
 
 import entities.Cars;
 import entities.Users;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
 /**
  *
@@ -19,7 +16,7 @@ import javax.persistence.Query;
  */
 public abstract class AbstractFacade<T> {
 
-    private Class<T> entityClass;
+    private final Class<T> entityClass;
 
     public AbstractFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
@@ -40,13 +37,19 @@ public abstract class AbstractFacade<T> {
     }
 
     public T find(Object id) {
-        return getEntityManager().find(entityClass, id);
+        T result = getEntityManager().find(entityClass, id);
+        if (result == null)
+            throw new ResourceNotFoundException("Resource with id " + id + " not found.");
+        return result;
     }
 
     public List<T> findAll() {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
-        return getEntityManager().createQuery(cq).getResultList();
+        List<T> results = getEntityManager().createQuery(cq).getResultList();
+        if (results.isEmpty())
+            throw new ResourceNotFoundException("No resources found.");
+        return results;
     }
 
     public List<T> findRange(int[] range) {
@@ -67,19 +70,25 @@ public abstract class AbstractFacade<T> {
     }
 
     public Users fetchUserDetails(int userID, String password) {
-        return (Users) getEntityManager()
+        Users user = (Users) getEntityManager()
                 .createNamedQuery("Users.fetchUserDetails")
                 .setParameter("userID", userID)
                 .setParameter("password", password)
                 .getSingleResult();
+        if (user == null)
+            throw new ResourceNotFoundException("User with id " + userID + " not found.");
+        return user;
     }
 
     public List<Cars> fetchCarDetailsByYear(String cModel, int cYear) {
-        return (List<Cars>) getEntityManager()
+        List<Cars> cars = (List<Cars>) getEntityManager()
                 .createNamedQuery("Cars.fetchCarDetailsByYear", Cars.class)
                 .setParameter("cModel", cModel)
                 .setParameter("cYear", cYear)
                 .getResultList();
+        if (cars.isEmpty())
+            throw new ResourceNotFoundException("No cars found.");
+        return cars;
     }
 
 }
