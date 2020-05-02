@@ -1,16 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entities.service;
 
 import java.util.Set;
 import javax.ws.rs.core.Application;
 
 /**
- *
- * @author BASK
+ * @author Tsvetoslav Dimov
+ * @date 02/05/2020
+ * @studentID 20077038
  */
 @javax.ws.rs.ApplicationPath("webresources")
 public class ApplicationConfig extends Application {

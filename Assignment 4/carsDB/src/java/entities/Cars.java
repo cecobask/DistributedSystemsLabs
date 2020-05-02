@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entities;
 
 import java.io.Serializable;
@@ -18,8 +13,11 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
- * @author BASK
+ * @author      Tsvetoslav Dimov
+ * @date        02/05/2020
+ * @studentID   20077038
+ * @description Model class for object type Car. It is used by the RESTful
+ *              services to retrieve data from the MySQL database.
  */
 @Entity
 @Table(name = "cars")
@@ -54,13 +52,25 @@ public class Cars implements Serializable {
     @Column(name = "cYear")
     private int cYear;
 
+    // Empty constructor used for JSON responses.
     public Cars() {
     }
 
+    /**
+     * @description Car object constructor with ID parameter.
+     * @param carID
+     */
     public Cars(Integer carID) {
         this.carID = carID;
     }
 
+    /**
+     * @description Car object constructor with all required parameters.
+     * @param carID
+     * @param cMake
+     * @param cModel
+     * @param cYear 
+     */
     public Cars(Integer carID, String cMake, String cModel, int cYear) {
         this.carID = carID;
         this.cMake = cMake;
@@ -68,6 +78,7 @@ public class Cars implements Serializable {
         this.cYear = cYear;
     }
 
+    // Getters and setters.
     public Integer getCarID() {
         return carID;
     }
@@ -100,6 +111,10 @@ public class Cars implements Serializable {
         this.cYear = cYear;
     }
 
+    /**
+     * Integer hash code representation of the Car object.
+     * @return integer hash code
+     */
     @Override
     public int hashCode() {
         int hash = 0;
@@ -107,6 +122,11 @@ public class Cars implements Serializable {
         return hash;
     }
 
+    /**
+     * @description Compare Car objects.
+     * @param object
+     * @return true - objects match, false - objects do not match.
+     */
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -120,6 +140,10 @@ public class Cars implements Serializable {
         return true;
     }
 
+    /**
+     * @description Converts a Car object into its String representation.
+     * @return String representation of a Car object.
+     */
     @Override
     public String toString() {
         return "entities.Cars[ carID=" + carID + " ]";

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entities.service;
 
 import entities.Users;
@@ -21,8 +16,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- *
- * @author BASK
+ * @author      Tsvetoslav Dimov
+ * @date        02/05/2020
+ * @studentID   20077038
+ * @description A wrapper class that extends from the AbstractFacade, used to
+ *              implement the application logic for each CRUD operation.
  */
 @Stateless
 @Path("entities.users")
@@ -31,10 +29,15 @@ public class UsersFacadeREST extends AbstractFacade<Users> {
     @PersistenceContext(unitName = "carsDBPU")
     private EntityManager em;
 
+    // Default constructor for the UsersFacadeREST class.
     public UsersFacadeREST() {
         super(Users.class);
     }
 
+    /**
+     * @description Make the User instance managed and persistent.
+     * @param entity 
+     */
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -42,6 +45,11 @@ public class UsersFacadeREST extends AbstractFacade<Users> {
         super.create(entity);
     }
 
+    /**
+     * @description Merge the state of the User instance into the current persistence context.
+     * @param id
+     * @param entity 
+     */
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -49,12 +57,21 @@ public class UsersFacadeREST extends AbstractFacade<Users> {
         super.edit(entity);
     }
 
+    /**
+     * @description Remove the User instance.
+     * @param id 
+     */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
     }
 
+     /**
+     * @description Search for User instances with matching primary key (id).
+     * @param id
+     * @return Instance of a User object or 404 error.
+     */
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -62,6 +79,10 @@ public class UsersFacadeREST extends AbstractFacade<Users> {
         return super.find(id);
     }
 
+    /**
+     * @description Find all User instances.
+     * @return A list of all User object instances or 404 error.
+     */
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -69,6 +90,12 @@ public class UsersFacadeREST extends AbstractFacade<Users> {
         return super.findAll();
     }
 
+    /**
+     * @description Finds all User instances in a given id range.
+     * @param from
+     * @param to
+     * @return A list of all User object instances or 404 error.
+     */
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -76,6 +103,10 @@ public class UsersFacadeREST extends AbstractFacade<Users> {
         return super.findRange(new int[]{from, to});
     }
 
+    /**
+     * @description Finds all User instances and returns their count.
+     * @return Count of User object instances.
+     */
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
@@ -83,6 +114,12 @@ public class UsersFacadeREST extends AbstractFacade<Users> {
         return String.valueOf(super.count());
     }
     
+    /**
+     * @description Search for a User entity instance with a matching User ID and Password attributes. 
+     * @param userID
+     * @param password
+     * @return Instance of a matching User object or 404 error.
+     */
     @GET
     @Path("fetchUserDetails/{userID}/{password}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -90,6 +127,10 @@ public class UsersFacadeREST extends AbstractFacade<Users> {
         return super.fetchUserDetails(userID, password);
     }
 
+    /**
+     * @description Interface used to interact with the persistence context.
+     * @return EntityManager instance
+     */
     @Override
     protected EntityManager getEntityManager() {
         return em;
